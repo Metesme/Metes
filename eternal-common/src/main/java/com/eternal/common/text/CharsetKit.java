@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
- * @author Hikari
+ * @author Eternal
  * @version 1.0
  * @description: 字符集工具类
  * @date 2021/9/23 5:48 下午

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigInteger;
 
 /**
- * @author Hikari
+ * @author Eternal
  * @version 1.0
  * @description: 文件实体类
  * @date 2021/9/23 4:09 下午

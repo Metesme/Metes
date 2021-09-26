@@ -1,0 +1,14 @@
+# spring配置
+spring:
+  redis:
+    host: 8.210.72.249
+    port: 6355
+    password: Pv4boIgGgI0HCp3I
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://180.119.121.202:3306/nash_admin?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: Nashcloud[]123
+mybatis-plus:
+  type-aliases-package: com.eternal.domain.*
+  mapper-locations: classpath:/mapper/*Mapper.xml

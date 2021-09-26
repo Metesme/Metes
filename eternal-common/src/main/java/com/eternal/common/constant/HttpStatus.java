@@ -1,7 +1,7 @@
 package com.eternal.common.constant;
 
 /**
- * @author Hikari
+ * @author Eternal
  * @version 1.0
  * @description: 返回状态码
  * @date 2021/9/23 5:29 下午

@@ -3,7 +3,7 @@ package com.eternal.common.text;
 import com.eternal.common.utils.StringUtils;
 
 /**
- * @author Hikari
+ * @author Eternal
  * @version 1.0
  * @description: TODO
  * @date 2021/9/23 5:44 下午

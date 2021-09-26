@@ -6,7 +6,7 @@ import com.eternal.common.utils.StringUtils;
 import java.util.HashMap;
 
 /**
- * @author Hikari
+ * @author Eternal
  * @version 1.0
  * @description: 返回消息实体
  * @date 2021/9/23 5:28 下午
