@@ -10,8 +10,7 @@
     <version>1.0.0</version>
     <modules>
         <module>eternal-common</module>
-        <module>eternal-common</module>
-        <module>eternal-common</module>
+
     </modules>
 
     <properties>

@@ -19,10 +19,10 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-starter</artifactId>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -48,16 +48,37 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
+
+<!--        &lt;!&ndash;spring security 安全框架&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-security</artifactId>-->
+<!--        </dependency>-->
+
+        <!-- SpringBoot Boot Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.7.13</version>
+        </dependency>
+
         <dependency>
             <groupId>com.eternal</groupId>
             <artifactId>eternal-common</artifactId>
             <version>1.0.0</version>
         </dependency>
+
     </dependencies>
 
     <build>
