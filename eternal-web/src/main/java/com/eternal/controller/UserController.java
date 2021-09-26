@@ -3,6 +3,7 @@ package com.eternal.controller;
 import com.eternal.common.utils.StringUtils;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.domain.UserEntity;
+import com.eternal.model.UserInfo;
 import com.eternal.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class UserController extends BaseController {
         if (StringUtils.isNotEmpty( user.getUserName())
                 && StringUtils.isNotEmpty( user.getPassword())){
             if(user.getPassword().equals("233")){
-                String token = tokenService.createToken("2333");
+                String token = tokenService.createToken(233L ,user.getUserName());
                 return token;
             }
         }
