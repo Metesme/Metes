@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IUserService {
     List<UserEntity> selectUserList(UserEntity entity);
+
+    Boolean checkToken (String token,UserEntity user);
 }

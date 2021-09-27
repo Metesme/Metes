@@ -2,10 +2,12 @@ package com.eternal.service.impl;
 
 import com.eternal.domain.UserEntity;
 import com.eternal.mapper.UserMapper;
+import com.eternal.model.UserInfo;
 import com.eternal.service.IUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eternal.utils.RedisUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,10 +18,20 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements IUserService {
-    @Autowired
+    @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private RedisUtils redisUtils;
     @Override
     public List<UserEntity> selectUserList(UserEntity entity) {
         return null;
+    }
+
+    @Override
+    public Boolean checkToken(String token, UserEntity user) {
+        UserInfo userInfo;
+        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token + "_" + user.getUserName());
+        return userInfo != null ;
     }
 }

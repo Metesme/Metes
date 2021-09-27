@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Eternal
+ * @author Ete
  * @version 1.0
  * @description: TODO
  * @date 2021/9/23 4:04 下午
@@ -14,7 +14,8 @@ import lombok.NoArgsConstructor;
 public class UserEntity {
     private String userName;
     private String password;
-    private String email;
-    private String phone;
-    private String nickName;
+    private Long userId;
+    private String privateKeyBa;
+    private String publicKey;
+    private String masterKey;
 }

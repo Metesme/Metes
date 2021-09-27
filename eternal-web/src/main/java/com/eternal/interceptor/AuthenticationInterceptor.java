@@ -74,7 +74,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 if (!tokenHeader.startsWith("Bearer")) {
             log.info("invalid token");
         }
-        String token = tokenHeader.replace("Bearer", "");
+        String token = tokenHeader.replace("Bearer ", "");
         String userCatchId = (String) redisUtils.get(token);
         if (StringUtils.isEmpty(userCatchId)){
            return false;

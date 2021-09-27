@@ -13,7 +13,8 @@ public class AuthConfig implements WebMvcConfigurer {
         InterceptorRegistration registration = registry.addInterceptor(new AuthenticationInterceptor());
         registration.addPathPatterns("/**");
         registration.excludePathPatterns(
-                "/user/login"
+                "/user/getToken",
+                "/user/check"
         );
     }
 }
