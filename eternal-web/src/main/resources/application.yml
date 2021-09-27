@@ -1,3 +1,9 @@
+server:
+  port: 8000
+  error:
+    include-exception: true
+    include-message: always
+
 # spring配置
 spring:
   redis:
