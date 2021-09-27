@@ -1,6 +1,7 @@
 package com.eternal.service;
 
 import com.eternal.domain.UserEntity;
+import com.eternal.domain.UserKeyEntity;
 
 import java.util.List;
 
@@ -11,5 +12,8 @@ public interface IUserService {
     int insertUser(UserEntity entity);
     boolean isUserNameExist(String userName);
     boolean isPhoneExist(String phone);
+    UserEntity selectUserByUserName (String userName);
+    UserKeyEntity selectUserKeyByUserId (Long userId);
+
 
 }

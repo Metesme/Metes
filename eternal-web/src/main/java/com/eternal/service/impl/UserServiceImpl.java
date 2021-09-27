@@ -2,6 +2,8 @@ package com.eternal.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.eternal.domain.UserEntity;
+import com.eternal.domain.UserKeyEntity;
+import com.eternal.mapper.UserKeyMapper;
 import com.eternal.mapper.UserMapper;
 import com.eternal.model.UserInfo;
 import com.eternal.service.IUserService;
@@ -24,6 +26,10 @@ public class UserServiceImpl implements IUserService {
 
     @Resource
     private RedisUtils redisUtils;
+
+    @Resource
+    private UserKeyMapper userKeyMapper;
+
     @Override
     public List<UserEntity> selectUserList(UserEntity entity) {
         return null;
@@ -38,11 +44,7 @@ public class UserServiceImpl implements IUserService {
         LambdaQueryWrapper<UserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(UserEntity::getUserName, userName);
         List<UserEntity> list = userMapper.selectList(lambdaQueryWrapper);
-        if (list != null && !list.isEmpty()) {
-            return true;
-        } else {
-            return false;
-        }
+        return list != null && !list.isEmpty();
     }
 
     @Override
@@ -50,11 +52,21 @@ public class UserServiceImpl implements IUserService {
         LambdaQueryWrapper<UserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(UserEntity::getPhone, phone);
         UserEntity entity = userMapper.selectOne(lambdaQueryWrapper);
-        if (entity != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return entity != null;
+    }
+
+    @Override
+    public UserEntity selectUserByUserName(String userName) {
+        LambdaQueryWrapper<UserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserEntity::getUserName, userName);
+        return userMapper.selectOne(lambdaQueryWrapper);
+    }
+
+    @Override
+    public UserKeyEntity selectUserKeyByUserId(Long userId) {
+        LambdaQueryWrapper<UserKeyEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserKeyEntity::getId, userId);
+        return userKeyMapper.selectOne(lambdaQueryWrapper);
     }
 
 
@@ -64,4 +76,5 @@ public class UserServiceImpl implements IUserService {
         userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token + "_" + user.getUserName());
         return userInfo != null ;
     }
+
 }

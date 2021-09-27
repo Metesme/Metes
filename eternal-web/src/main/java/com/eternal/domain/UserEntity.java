@@ -3,6 +3,7 @@ package com.eternal.domain;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Eternal
@@ -10,13 +11,12 @@ import lombok.Data;
  * @description: TODO
  * @date 2021/9/23 4:04 下午
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @TableName("user")
 public class UserEntity extends BaseEntity {
     @TableField(value="user_name")
     private String userName;
-    @TableField(value="password")
-    private String password;
     @TableField(value="email")
     private String email;
     @TableField(value="phone")
@@ -25,10 +25,5 @@ public class UserEntity extends BaseEntity {
     private String nickName;
     @TableField(value="userId")
     private Long userId;
-    @TableField(value="privateKeyBa")
-    private String privateKeyBa;
-    @TableField(value="publicKey")
-    private String publicKey;
-    @TableField(value="masterKeyBa")
-    private String masterKeyBa;
+
 }

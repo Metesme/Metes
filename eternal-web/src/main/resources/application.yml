@@ -16,5 +16,5 @@ spring:
     username: root
     password: EternalRoot123.
 mybatis-plus:
-  type-aliases-package: com.eternal.domain.*
+  type-aliases-package: com.eternal.domain
   mapper-locations: classpath:/mapper/*Mapper.xml

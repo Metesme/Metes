@@ -13,11 +13,10 @@ public class TokenService {
     @Resource
     private RedisUtils redisUtils;
 
-    public  String createToken (Long uid,String userName){
+    public  String createToken (String userName){
         String token = IdUtil.simpleUUID();
         UserInfo userInfo = new UserInfo();
         userInfo.setToken(token);
-        userInfo.setUserid(uid);
         userInfo.setUsername(userName);
         boolean b = redisUtils.set("ete_login_token:" + token + "_" + userName, userInfo, 30000);
         System.out.println(b);
