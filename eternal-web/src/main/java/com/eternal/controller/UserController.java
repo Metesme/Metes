@@ -64,7 +64,7 @@ public class UserController extends BaseController {
     @ResponseBody
     public AjaxResult checkToken (@RequestHeader(HttpHeaders.AUTHORIZATION) String token,@RequestBody UserEntity user){
         AjaxResult result = new AjaxResult();
-        token = token.replace("Bearer","");
+        token = token.replace("Bearer","").trim();
         Boolean aBoolean = userService.checkToken(token, user);
         result.put("loginStatus",aBoolean);
         return result;
