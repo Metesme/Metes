@@ -23,8 +23,12 @@ public class UserEntity extends BaseEntity {
     private String phone;
     @TableField(value="nick_name")
     private String nickName;
+    @TableField(value="userId")
     private Long userId;
+    @TableField(value="privateKeyBa")
     private String privateKeyBa;
+    @TableField(value="publicKey")
     private String publicKey;
-    private String masterKey;
+    @TableField(value="masterKeyBa")
+    private String masterKeyBa;
 }
