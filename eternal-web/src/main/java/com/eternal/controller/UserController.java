@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 
 /**
  * @author Eternal
@@ -32,7 +34,6 @@ public class UserController extends BaseController {
     @PostMapping("/getToken")
     @ResponseBody
     public AjaxResult login (@RequestBody UserEntity user) throws Exception {
-        AjaxResult result = new AjaxResult();
         String userName = user.getUserName();
         if (    StringUtils.isNotEmpty( userName)
                 && StringUtils.isNotEmpty( userName)
@@ -44,16 +45,14 @@ public class UserController extends BaseController {
                 System.out.println(token);
                 //加密 token 发送到客户端解密
                 String encrypt = RSAUtils.encrypt(token, userKeyEntity.getPublicKey());
-                result.put("userId",userId);
-                result.put("token",encrypt);
-                result.put("masterKeyBa",userKeyEntity.getMasterKeyBa());
-                result.put("privateKeyBa",userKeyEntity.getPrivateKeyBa());
-                result.put("status","success");
-                return result;
+                HashMap resultMap = new HashMap();
+                resultMap.put("userId",userId);
+                resultMap.put("token",encrypt);
+                resultMap.put("masterKeyBa",userKeyEntity.getMasterKeyBa());
+                resultMap.put("privateKeyBa",userKeyEntity.getPrivateKeyBa());
+                return AjaxResult.success("login success",resultMap);
         }
-        result.put("status","error");
-        result.put("msg","Account:" + userName + " is not exist");
-        return result;
+        return  AjaxResult.error("login error");
     }
 
     @PostMapping("/check")
@@ -62,7 +61,7 @@ public class UserController extends BaseController {
         AjaxResult result = new AjaxResult();
         token = token.replace("Bearer","").trim();
         Boolean aBoolean = userService.checkToken(token);
-        result.put("loginStatus",aBoolean);
+        result.put("checkResult",aBoolean);
         return result;
     }
 }
