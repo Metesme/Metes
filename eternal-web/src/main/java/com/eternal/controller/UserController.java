@@ -37,12 +37,9 @@ public class UserController extends BaseController {
         if (    StringUtils.isNotEmpty( userName)
                 && StringUtils.isNotEmpty( userName)
                 && userService.isUserNameExist(userName)){
-
                 UserEntity userEntity = userService.selectUserByUserName(userName);
-                Long userId = userEntity.getUserId();
-
+                Long userId = userEntity.getId();
             UserKeyEntity userKeyEntity = userService.selectUserKeyByUserId(userId);
-
             String token = tokenService.createToken(userName);
                 System.out.println(token);
                 //加密 token 发送到客户端解密
@@ -55,15 +52,16 @@ public class UserController extends BaseController {
                 return result;
         }
         result.put("status","error");
+        result.put("msg","Account:" + userName + " is not exist");
         return result;
     }
 
     @PostMapping("/check")
     @ResponseBody
-    public AjaxResult checkToken (@RequestHeader(HttpHeaders.AUTHORIZATION) String token,@RequestBody UserEntity user){
+    public AjaxResult checkToken (@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         AjaxResult result = new AjaxResult();
         token = token.replace("Bearer","").trim();
-        Boolean aBoolean = userService.checkToken(token, user);
+        Boolean aBoolean = userService.checkToken(token);
         result.put("loginStatus",aBoolean);
         return result;
     }

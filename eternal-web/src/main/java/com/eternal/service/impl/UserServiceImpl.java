@@ -70,10 +70,11 @@ public class UserServiceImpl implements IUserService {
     }
 
 
+
     @Override
-    public Boolean checkToken(String token, UserEntity user) {
+    public Boolean checkToken(String token) {
         UserInfo userInfo;
-        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token + "_" + user.getUserName());
+        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token );
         return userInfo != null ;
     }
 

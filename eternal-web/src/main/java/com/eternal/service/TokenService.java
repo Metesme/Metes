@@ -18,7 +18,7 @@ public class TokenService {
         UserInfo userInfo = new UserInfo();
         userInfo.setToken(token);
         userInfo.setUsername(userName);
-        boolean b = redisUtils.set("ete_login_token:" + token + "_" + userName, userInfo, 30000);
+        boolean b = redisUtils.set("ete_login_token:" + token, userInfo, 30000);
         System.out.println(b);
         return token;
     }

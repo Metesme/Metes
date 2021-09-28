@@ -15,6 +15,11 @@ spring:
     url: jdbc:mysql://101.32.114.40:3306/eternal?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
     username: root
     password: EternalRoot123.
+  servlet:
+      multipart:
+        enabled: true
+        max-file-size: 2048MB
+        max-request-size: 2048MB
 mybatis-plus:
   type-aliases-package: com.eternal.domain
   mapper-locations: classpath:/mapper/*Mapper.xml

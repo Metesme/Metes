@@ -23,7 +23,7 @@ public class UserEntity extends BaseEntity {
     private String phone;
     @TableField(value="nick_name")
     private String nickName;
-    @TableField(value="userId")
-    private Long userId;
+    @TableField(value="id")
+    private Long id;
 
 }

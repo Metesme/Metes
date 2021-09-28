@@ -10,8 +10,8 @@ import com.eternal.common.web.page.TableDataInfo;
 import com.eternal.common.web.page.TableSupport;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
+//import com.sun.org.slf4j.internal.Logger;
+//import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
@@ -27,7 +27,7 @@ import java.util.Map;
  * @date 2021/9/23 5:26 下午
  */
 public class BaseController {
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());
+    //protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型
