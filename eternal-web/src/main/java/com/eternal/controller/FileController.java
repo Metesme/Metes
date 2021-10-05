@@ -1,8 +1,16 @@
 package com.eternal.controller;
 
 
+import com.eternal.common.annotation.PassToken;
+import com.eternal.common.web.controller.BaseController;
+import com.eternal.common.web.page.TableDataInfo;
+import com.eternal.domain.FileEntity;
+import com.eternal.mapper.FileMapper;
+import com.eternal.service.IFileService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -15,7 +23,9 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/file")
-public class FileController  {
+public class FileController extends BaseController {
+    @Autowired
+    private IFileService fileService;
 
     @PostMapping("/upload")
     @ResponseBody
@@ -32,11 +42,22 @@ public class FileController  {
 
         try {
             file.transferTo(dest);
+            FileEntity entity = new FileEntity();
+            entity.setFileName(fileName);
+            entity.setFileSize(file.getSize());
+            entity.setFilePath(filePath);
+            fileService.insert(entity);
             return "上传成功";
         } catch (IOException e) {
             System.out.println(e);
         }
 
         return "上传失败！";
+    }
+    @GetMapping("list")
+    @PassToken
+    public TableDataInfo getFileList(FileEntity entity){
+        startPage();
+        return getDataTable(fileService.selectList(entity));
     }
 }

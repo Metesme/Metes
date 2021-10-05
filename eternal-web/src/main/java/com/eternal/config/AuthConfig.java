@@ -21,7 +21,8 @@ public class AuthConfig implements WebMvcConfigurer {
         registration.addPathPatterns("/**");
         registration.excludePathPatterns(
                 "/user/getToken",
-                "/user/check"
+                "/user/check",
+                "/file/list"
         );
     }
 }
