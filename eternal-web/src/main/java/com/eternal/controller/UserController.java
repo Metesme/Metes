@@ -50,9 +50,9 @@ public class UserController extends BaseController {
                 resultMap.put("token",encrypt);
                 resultMap.put("masterKeyBa",userKeyEntity.getMasterKeyBa());
                 resultMap.put("privateKeyBa",userKeyEntity.getPrivateKeyBa());
-                return AjaxResult.success("login success",resultMap);
+                return AjaxResult.success("success",resultMap);
         }
-        return  AjaxResult.error("login error");
+        return  AjaxResult.error("error");
     }
 
     @PostMapping("/check")

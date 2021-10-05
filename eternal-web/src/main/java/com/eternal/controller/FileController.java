@@ -1,10 +1,12 @@
 package com.eternal.controller;
 
 
+import com.eternal.common.web.domain.AjaxResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author Eternal
@@ -36,7 +38,18 @@ public class FileController  {
         } catch (IOException e) {
             System.out.println(e);
         }
-
         return "上传失败！";
     }
+
+    @GetMapping ("/inlet")
+    @ResponseBody
+    public AjaxResult getInlet(){
+        HashMap resultMap = new HashMap();
+        resultMap.put("inlet","https://ipfs-gw.decloud.foundation/api/v0/add");
+        resultMap.put("inletToken","c3Vic3RyYXRlLWNUR3dEbjZ2aW9lNHFzSmNNSzFBSkh1d2FEeXJtZTg2ZWZTUVZ4NGZoM0JKWmdEc0Q6MHg0NGRhZTQ2YjUxMWZhOTAwYzA3NjcxOTQ2NTJlY2I4NDAyNTAzMGVkYzdkMjU5MWZkOGVlNThlNzZhZDQxNTMzNTNkYWE1ZDQ0YjRjNjFmZWE3Y2MyZGVlMGMxZWY3ZGM1NzI4ZDQwYTY1ODQzZjBiZDY3ZTk5ODVlOTZkYWM4YQ==");
+        resultMap.put("param","pin");
+        return AjaxResult.success(resultMap);
+    }
+
+
 }
