@@ -1,16 +1,8 @@
 package com.eternal.controller;
 
 
-import com.eternal.common.annotation.PassToken;
-import com.eternal.common.web.controller.BaseController;
-import com.eternal.common.web.page.TableDataInfo;
-import com.eternal.domain.FileEntity;
-import com.eternal.mapper.FileMapper;
-import com.eternal.service.IFileService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -30,30 +22,34 @@ public class FileController extends BaseController {
     @PostMapping("/upload")
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file) {
-
         if (file.isEmpty()) {
             System.out.println("error");
             return "上传失败，请选择文件";
         }
-
         String fileName = file.getOriginalFilename();
         String filePath = "/Users/jiajunmei/Desktop/";
         File dest = new File(filePath + fileName);
-
         try {
             file.transferTo(dest);
-            FileEntity entity = new FileEntity();
-            entity.setFileName(fileName);
-            entity.setFileSize(file.getSize());
-            entity.setFilePath(filePath);
-            fileService.insert(entity);
             return "上传成功";
         } catch (IOException e) {
             System.out.println(e);
         }
-
         return "上传失败！";
     }
+
+    @GetMapping ("/inlet")
+    @ResponseBody
+    public AjaxResult getInlet(){
+        HashMap resultMap = new HashMap();
+        resultMap.put("inlet","https://ipfs-gw.decloud.foundation/api/v0/add");
+        resultMap.put("inletToken","c3Vic3RyYXRlLWNUR3dEbjZ2aW9lNHFzSmNNSzFBSkh1d2FEeXJtZTg2ZWZTUVZ4NGZoM0JKWmdEc0Q6MHg0NGRhZTQ2YjUxMWZhOTAwYzA3NjcxOTQ2NTJlY2I4NDAyNTAzMGVkYzdkMjU5MWZkOGVlNThlNzZhZDQxNTMzNTNkYWE1ZDQ0YjRjNjFmZWE3Y2MyZGVlMGMxZWY3ZGM1NzI4ZDQwYTY1ODQzZjBiZDY3ZTk5ODVlOTZkYWM4YQ==");
+        resultMap.put("param","pin");
+        return AjaxResult.success(resultMap);
+    }
+
+
+
     @GetMapping("list")
     @PassToken
     public TableDataInfo getFileList(FileEntity entity){
