@@ -1,8 +1,8 @@
 package com.eternal.interceptor;
 
 
-import com.eternal.common.annotation.PassToken;
-import com.eternal.common.web.domain.AjaxResult;
+import com.eternal.common.annotation.NoAuth;
+import com.eternal.model.UserInfo;
 import com.eternal.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         }
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-        if (method.isAnnotationPresent(PassToken.class)) {
-            PassToken passToken = method.getAnnotation(PassToken.class);
-            if (passToken.required()) {
-                return true;
-            }
+
+        log.debug("Method: " + method.getName() + ", NoAuth: " + method.isAnnotationPresent(NoAuth.class));
+        if (method.isAnnotationPresent(NoAuth.class)) {
+            return true;
         }
 
         String tokenHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
@@ -56,19 +55,18 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         assert tokenHeader != null;
         if (!tokenHeader.startsWith("Bearer")) {
             log.info("invalid token");
-            //throw new Exception("Error : invalid token.");
             result(response,
                     " {\"code\":\"400\",\"msg\":\"Error : invalid token.\"}"
             );
         }
         String token = tokenHeader.replace("Bearer", "").trim();
-        Boolean checkToken = userService.checkToken(token);
-        if(!checkToken){
-            //throw new Exception("Error : The token has expired. ");
+        UserInfo user = userService.getUserByToken(token);
+        if(user == null){
             result(response,
                     " {\"code\":\"400\",\"msg\":\"Error : The token has expired. \"}"
             );
         }
+        request.setAttribute("currentUser", user);
         return true;
     }
 
