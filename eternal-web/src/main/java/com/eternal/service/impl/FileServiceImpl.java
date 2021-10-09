@@ -11,21 +11,23 @@ import com.eternal.domain.UserKeyEntity;
 import com.eternal.mapper.FileMapper;
 import com.eternal.service.IFileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.lang.invoke.LambdaMetafactory;
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * @author Hikari
+ * @author Ete
  * @version 1.0
- * @description: TODO
+ * @description: File
  * @date 2021/9/29 11:55 上午
  */
 @Service
 public class FileServiceImpl implements IFileService {
-    @Autowired
+    @Resource
     private FileMapper fileMapper;
 
     @Override
@@ -42,23 +44,23 @@ public class FileServiceImpl implements IFileService {
         if (fileName != null){
             wrapper.eq(FileEntity::getFileName, fileName);
         }
-        List<FileEntity> list = wrapper
+        return  wrapper
                 .orderByDesc(FileEntity::getCreateTime)
                 .list();
-        return list;
     }
 
     @Override
+    @Async
     public String pin(FileEntity entity) {
         HashMap<String, String> postMap = new HashMap<>();
         postMap.put("cid", entity.getCid());
         postMap.put("name",entity.getFileName());
         String jsonStr = JSONUtil.toJsonStr(postMap);
-        String s = HttpRequest.post("https://pin.crustcode.com/psa/pins")
+       return HttpRequest.post("https://pin.crustcode.com/psa/pins")
                 .header(Header.AUTHORIZATION, "Bearer c3Vic3RyYXRlLWNUR3dEbjZ2aW9lNHFzSmNNSzFBSkh1d2FEeXJtZTg2ZWZTUVZ4NGZoM0JKWmdEc0Q6MHg2Y2UwMmEyY2FmNTRkNjNhYzhjNTNkYjRlNjA1MWYyZjlkYmRmOWQ1OGFiMzY0N2JlNjNlOGY0MjMzYTJjNDI5MzM4ZDk0YjkwNDY4ZWRmZWUwNjcwMjk0NDQyMGViZDZkN2EwMjczNDczY2I0YTg4ZjQ0MGVjNTM0MmI0NjQ4ZA==")
                 .body(jsonStr)
                 .timeout(30000)
                 .execute().body();
-        return s;
+
     }
 }

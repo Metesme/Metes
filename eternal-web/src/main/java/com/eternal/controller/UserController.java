@@ -9,8 +9,10 @@ import com.eternal.domain.UserKeyEntity;
 import com.eternal.service.IUserService;
 import com.eternal.service.TokenService;
 import com.eternal.utils.RSAUtils;
+import com.eternal.vo.UserRegisterVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,11 +35,31 @@ public class UserController extends BaseController {
     private IUserService userService;
 
     @NoAuth
+    @Transactional
+    @PostMapping("/register")
+    public AjaxResult register(@RequestBody UserRegisterVo userRegisterVo){
+        String email = userRegisterVo.getEmail();
+        if (    StringUtils.isNotEmpty( email)
+                && !userService.isUserEmailExist(email)){
+            UserEntity userEntity = new UserEntity();
+            userEntity.setEmail(email);
+
+            UserKeyEntity userKeyEntity = new UserKeyEntity();
+            userKeyEntity.setMasterKeyBa(userRegisterVo.getMasterKeyBa());
+            userKeyEntity.setPrivateKeyBa(userRegisterVo.getPrivateKeyBa());
+            userKeyEntity.setPublicKey(userRegisterVo.getPublicKey());
+            userService.insertUser(userEntity);
+            userService.insertUserKey(userKeyEntity);
+            return AjaxResult.success();
+        }
+        return AjaxResult.error(email + " is registered ");
+    }
+
+    @NoAuth
     @PostMapping("/getToken")
     public AjaxResult login (@RequestBody UserEntity user) throws Exception {
         String userName = user.getUserName();
         if (    StringUtils.isNotEmpty( userName)
-                && StringUtils.isNotEmpty( userName)
                 && userService.isUserNameExist(userName)){
                 UserEntity userEntity = userService.selectUserByUserName(userName);
                 Long userId = userEntity.getId();

@@ -8,15 +8,13 @@ import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
 import com.eternal.common.web.page.TableDataInfo;
 import com.eternal.domain.FileEntity;
-import com.eternal.model.UserInfo;
+import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IFileService;
 import com.eternal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
+
 import java.util.HashMap;
 
 /**
@@ -65,18 +63,18 @@ public class FileController extends BaseController {
 
 
     @GetMapping("list")
-    public TableDataInfo getFileList(@CurrentUser UserInfo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public TableDataInfo getFileList(@CurrentUser UserLoginVo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         startPage();
         entity.setUserId(user.getUserid());
         return getDataTable(fileService.selectList(entity));
     }
 
     @PostMapping("pinByHash")
-    public AjaxResult pinByHash(@CurrentUser UserInfo user, FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public AjaxResult pinByHash(@CurrentUser UserLoginVo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String s = fileService.pin(entity);
-        JSON resJson = JSONUtil.parse(s);
+       // JSON resJson = JSONUtil.parse(s);
         entity.setUserId(user.getUserid());
         int insert = fileService.insert(entity);
-        return AjaxResult.success(resJson);
+        return AjaxResult.success();
     }
 }

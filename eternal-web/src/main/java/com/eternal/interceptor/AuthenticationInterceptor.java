@@ -2,7 +2,7 @@ package com.eternal.interceptor;
 
 
 import com.eternal.common.annotation.NoAuth;
-import com.eternal.model.UserInfo;
+import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             );
         }
         String token = tokenHeader.replace("Bearer", "").trim();
-        UserInfo user = userService.getUserByToken(token);
+        UserLoginVo user = userService.getUserByToken(token);
         if(user == null){
             result(response,
                     " {\"code\":\"400\",\"msg\":\"Error : The token has expired. \"}"

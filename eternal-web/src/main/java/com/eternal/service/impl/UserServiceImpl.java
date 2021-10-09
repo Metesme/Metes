@@ -5,7 +5,7 @@ import com.eternal.domain.UserEntity;
 import com.eternal.domain.UserKeyEntity;
 import com.eternal.mapper.UserKeyMapper;
 import com.eternal.mapper.UserMapper;
-import com.eternal.model.UserInfo;
+import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IUserService;
 import com.eternal.utils.RedisUtils;
 import org.springframework.stereotype.Service;
@@ -40,11 +40,23 @@ public class UserServiceImpl implements IUserService {
         return userMapper.insert(entity);
     }
     @Override
+    public int insertUserKey(UserKeyEntity entity) {
+        return userKeyMapper.insert(entity);
+    }
+    @Override
     public boolean isUserNameExist(String userName){
         LambdaQueryWrapper<UserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(UserEntity::getUserName, userName);
         List<UserEntity> list = userMapper.selectList(lambdaQueryWrapper);
         return list != null && !list.isEmpty();
+    }
+
+    @Override
+    public boolean isUserEmailExist(String email) {
+        LambdaQueryWrapper<UserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(UserEntity::getEmail, email);
+        UserEntity entity = userMapper.selectOne(lambdaQueryWrapper);
+        return entity != null;
     }
 
     @Override
@@ -69,18 +81,18 @@ public class UserServiceImpl implements IUserService {
         return userKeyMapper.selectOne(lambdaQueryWrapper);
     }
 
-    public UserInfo getUserByToken(String token) {
-        UserInfo userInfo;
+    public UserLoginVo getUserByToken(String token) {
+        UserLoginVo userInfo;
         token = token.replace("Bearer", "").trim();
-        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token );
+        userInfo = (UserLoginVo)redisUtils.get("ete_login_token:" + token );
         return userInfo;
     }
 
 
     @Override
     public Boolean checkToken(String token) {
-        UserInfo userInfo;
-        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token );
+        UserLoginVo userInfo;
+        userInfo = (UserLoginVo)redisUtils.get("ete_login_token:" + token );
         return userInfo != null ;
     }
 

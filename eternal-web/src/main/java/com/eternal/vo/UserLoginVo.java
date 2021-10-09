@@ -1,4 +1,4 @@
-package com.eternal.model;
+package com.eternal.vo;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author etnl
  */
 @Data
-public class UserInfo implements Serializable {
+public class UserLoginVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
