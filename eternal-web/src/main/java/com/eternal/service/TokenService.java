@@ -1,7 +1,7 @@
 package com.eternal.service;
 
 import cn.hutool.core.util.IdUtil;
-import com.eternal.model.UserInfo;
+import com.eternal.vo.UserLoginVo;
 import com.eternal.utils.RedisUtils;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class TokenService {
 
     public  String createToken (String userName ,Long userId){
         String token = IdUtil.simpleUUID();
-        UserInfo userInfo = new UserInfo();
+        UserLoginVo userInfo = new UserLoginVo();
         userInfo.setToken(token);
         userInfo.setUsername(userName);
         userInfo.setUserid(userId);
