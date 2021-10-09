@@ -41,7 +41,7 @@ public class UserController extends BaseController {
                 UserEntity userEntity = userService.selectUserByUserName(userName);
                 Long userId = userEntity.getId();
             UserKeyEntity userKeyEntity = userService.selectUserKeyByUserId(userId);
-            String token = tokenService.createToken(userName);
+            String token = tokenService.createToken(userName,userId);
                 System.out.println(token);
                 //加密 token 发送到客户端解密
                 String encrypt = RSAUtils.encrypt(token, userKeyEntity.getPublicKey());
