@@ -1,13 +1,21 @@
 package com.eternal.controller;
 
 
+import cn.hutool.http.Header;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSON;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.eternal.common.annotation.PassToken;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
 import com.eternal.common.web.page.TableDataInfo;
 import com.eternal.domain.FileEntity;
 import com.eternal.service.IFileService;
+import com.eternal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
@@ -26,7 +34,8 @@ import java.util.HashMap;
 public class FileController extends BaseController {
     @Autowired
     private IFileService fileService;
-
+    @Autowired
+    private IUserService userService;
     @PostMapping("/upload")
     @ResponseBody
     public String upload(@RequestParam("file") MultipartFile file) {
@@ -60,8 +69,22 @@ public class FileController extends BaseController {
 
     @GetMapping("list")
     @PassToken
-    public TableDataInfo getFileList(FileEntity entity){
+    public TableDataInfo getFileList(FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         startPage();
+        Long id = userService.getUserIdByToken(token);
+        entity.setUserId(id);
         return getDataTable(fileService.selectList(entity));
+    }
+
+    @PostMapping("pinByHash")
+    @PassToken
+    public AjaxResult pinByHash(@RequestBody FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+        String s = fileService.pin(entity);
+        JSON resJson = JSONUtil.parse(s);
+//        Object status = resJson.getByPath("status");
+        Long id = userService.getUserIdByToken(token);
+        entity.setUserId(id);
+        int insert = fileService.insert(entity);
+        return AjaxResult.success(resJson);
     }
 }

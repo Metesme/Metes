@@ -14,6 +14,7 @@ public interface IUserService {
     boolean isPhoneExist(String phone);
     UserEntity selectUserByUserName (String userName);
     UserKeyEntity selectUserKeyByUserId (Long userId);
+    Long getUserIdByToken (String token);
 
 
 }

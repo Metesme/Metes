@@ -69,6 +69,13 @@ public class UserServiceImpl implements IUserService {
         return userKeyMapper.selectOne(lambdaQueryWrapper);
     }
 
+    @Override
+    public Long getUserIdByToken(String token) {
+        UserInfo userInfo;
+        token = token.replace("Bearer", "").trim();
+        userInfo = (UserInfo)redisUtils.get("ete_login_token:" + token );
+        return userInfo.getUserid();
+    }
 
 
     @Override
