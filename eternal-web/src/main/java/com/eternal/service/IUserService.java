@@ -2,6 +2,7 @@ package com.eternal.service;
 
 import com.eternal.domain.UserEntity;
 import com.eternal.domain.UserKeyEntity;
+import com.eternal.model.UserInfo;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface IUserService {
     boolean isPhoneExist(String phone);
     UserEntity selectUserByUserName (String userName);
     UserKeyEntity selectUserKeyByUserId (Long userId);
-    Long getUserIdByToken (String token);
+    UserInfo getUserByToken (String token);
 
 
 }

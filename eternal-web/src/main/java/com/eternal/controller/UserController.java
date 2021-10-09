@@ -1,5 +1,6 @@
 package com.eternal.controller;
 
+import com.eternal.common.annotation.NoAuth;
 import com.eternal.common.utils.StringUtils;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
@@ -31,8 +32,8 @@ public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
 
+    @NoAuth
     @PostMapping("/getToken")
-    @ResponseBody
     public AjaxResult login (@RequestBody UserEntity user) throws Exception {
         String userName = user.getUserName();
         if (    StringUtils.isNotEmpty( userName)
@@ -56,7 +57,6 @@ public class UserController extends BaseController {
     }
 
     @PostMapping("/check")
-    @ResponseBody
     public AjaxResult checkToken (@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         AjaxResult result = new AjaxResult();
         token = token.replace("Bearer","").trim();

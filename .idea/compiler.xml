@@ -14,7 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="eternal-common" options="" />
+      <module name="eternal-common" options="-parameters" />
       <module name="eternal-web" options="-parameters" />
     </option>
   </component>

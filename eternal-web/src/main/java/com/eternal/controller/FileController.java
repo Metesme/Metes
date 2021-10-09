@@ -1,17 +1,14 @@
 package com.eternal.controller;
 
 
-import cn.hutool.http.Header;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSON;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.eternal.common.annotation.PassToken;
+import com.eternal.common.annotation.CurrentUser;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
 import com.eternal.common.web.page.TableDataInfo;
 import com.eternal.domain.FileEntity;
+import com.eternal.model.UserInfo;
 import com.eternal.service.IFileService;
 import com.eternal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,27 +33,27 @@ public class FileController extends BaseController {
     private IFileService fileService;
     @Autowired
     private IUserService userService;
-    @PostMapping("/upload")
-    @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file) {
-        if (file.isEmpty()) {
-            System.out.println("error");
-            return "上传失败，请选择文件";
-        }
-        String fileName = file.getOriginalFilename();
-        String filePath = "/Users/jiajunmei/Desktop/";
-        File dest = new File(filePath + fileName);
-        try {
-            file.transferTo(dest);
-            return "上传成功";
-        } catch (IOException e) {
-            System.out.println(e);
-        }
-        return "上传失败！";
-    }
+
+//    @PostMapping("/upload")
+//    @ResponseBody
+//    public String upload(@RequestParam("file") MultipartFile file) {
+//        if (file.isEmpty()) {
+//            System.out.println("error");
+//            return "上传失败，请选择文件";
+//        }
+//        String fileName = file.getOriginalFilename();
+//        String filePath = "/Users/jiajunmei/Desktop/";
+//        File dest = new File(filePath + fileName);
+//        try {
+//            file.transferTo(dest);
+//            return "上传成功";
+//        } catch (IOException e) {
+//            System.out.println(e);
+//        }
+//        return "上传失败！";
+//    }
 
     @GetMapping ("/inlet")
-    @ResponseBody
     public AjaxResult getInlet(){
         HashMap resultMap = new HashMap();
         resultMap.put("inlet","https://ipfs-gw.decloud.foundation/api/v0/add");
@@ -68,22 +65,17 @@ public class FileController extends BaseController {
 
 
     @GetMapping("list")
-    @PassToken
-    public TableDataInfo getFileList(FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public TableDataInfo getFileList(@CurrentUser UserInfo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         startPage();
-        Long id = userService.getUserIdByToken(token);
-        entity.setUserId(id);
+        entity.setUserId(user.getUserid());
         return getDataTable(fileService.selectList(entity));
     }
 
     @PostMapping("pinByHash")
-    @PassToken
-    public AjaxResult pinByHash(@RequestBody FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public AjaxResult pinByHash(@CurrentUser UserInfo user, FileEntity entity,@RequestHeader(HttpHeaders.AUTHORIZATION) String token){
         String s = fileService.pin(entity);
         JSON resJson = JSONUtil.parse(s);
-//        Object status = resJson.getByPath("status");
-        Long id = userService.getUserIdByToken(token);
-        entity.setUserId(id);
+        entity.setUserId(user.getUserid());
         int insert = fileService.insert(entity);
         return AjaxResult.success(resJson);
     }
