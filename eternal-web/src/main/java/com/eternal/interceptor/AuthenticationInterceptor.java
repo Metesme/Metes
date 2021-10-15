@@ -2,6 +2,8 @@ package com.eternal.interceptor;
 
 
 import com.eternal.common.annotation.NoAuth;
+import com.eternal.common.utils.ClientIPUtils;
+import com.eternal.service.ISystemService;
 import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private ISystemService systemService;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
@@ -51,21 +55,34 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             result(response,
                    " {\"code\":\"400\",\"msg\":\"Error : token not found.\"}"
                     );
+            return false;
         }
-        assert tokenHeader != null;
+
         if (!tokenHeader.startsWith("Bearer")) {
             log.info("invalid token");
             result(response,
                     " {\"code\":\"400\",\"msg\":\"Error : invalid token.\"}"
             );
+            return false;
         }
         String token = tokenHeader.replace("Bearer", "").trim();
+        String clientIp = ClientIPUtils.getIpAddress(request);
         UserLoginVo user = userService.getUserByToken(token);
         if(user == null){
-            result(response,
-                    " {\"code\":\"400\",\"msg\":\"Error : The token has expired. \"}"
-            );
+            Boolean limit = systemService.isIpLimit(clientIp);
+            if(limit){
+                result(response,
+                        " {\"code\":\"400\",\"msg\":\"Error :  action from "+clientIp+"  is too ofen.\"}"
+                );
+            }else{
+                result(response,
+                        " {\"code\":\"400\",\"msg\":\"Error : The token has expired. \"}"
+                );
+            }
+
+            return false;
         }
+        user.setIpaddr(clientIp);
         request.setAttribute("currentUser", user);
         return true;
     }
@@ -88,7 +105,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         try {
             writer = response.getWriter();
             writer.print(json);
-
         } catch (IOException e) {
             log.error("response error",e);
         } finally {

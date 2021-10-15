@@ -1,8 +1,7 @@
 package com.eternal.controller;
 
 
-import cn.hutool.json.JSON;
-import cn.hutool.json.JSONUtil;
+
 import com.eternal.common.annotation.CurrentUser;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
@@ -10,7 +9,6 @@ import com.eternal.common.web.page.TableDataInfo;
 import com.eternal.domain.FileEntity;
 import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IFileService;
-import com.eternal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -29,27 +27,7 @@ import java.util.HashMap;
 public class FileController extends BaseController {
     @Autowired
     private IFileService fileService;
-    @Autowired
-    private IUserService userService;
 
-//    @PostMapping("/upload")
-//    @ResponseBody
-//    public String upload(@RequestParam("file") MultipartFile file) {
-//        if (file.isEmpty()) {
-//            System.out.println("error");
-//            return "上传失败，请选择文件";
-//        }
-//        String fileName = file.getOriginalFilename();
-//        String filePath = "/Users/jiajunmei/Desktop/";
-//        File dest = new File(filePath + fileName);
-//        try {
-//            file.transferTo(dest);
-//            return "上传成功";
-//        } catch (IOException e) {
-//            System.out.println(e);
-//        }
-//        return "上传失败！";
-//    }
 
     @GetMapping ("/inlet")
     public AjaxResult getInlet(){
@@ -74,7 +52,7 @@ public class FileController extends BaseController {
         String s = fileService.pin(entity);
        // JSON resJson = JSONUtil.parse(s);
         entity.setUserId(user.getUserid());
-        int insert = fileService.insert(entity);
+        fileService.insert(entity);
         return AjaxResult.success();
     }
 }
