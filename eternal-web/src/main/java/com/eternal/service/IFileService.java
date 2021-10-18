@@ -8,5 +8,5 @@ import java.util.List;
 public interface IFileService {
     int insert(FileEntity entity);
     List<FileEntity> selectList(FileEntity entity);
-    String pin (FileEntity entity);
+    void pin (FileEntity entity) ;
 }

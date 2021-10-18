@@ -41,18 +41,18 @@ public class FileController extends BaseController {
 
 
     @GetMapping("list")
-    public TableDataInfo getFileList(@CurrentUser UserLoginVo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
+    public TableDataInfo getFileList(@CurrentUser UserLoginVo user, FileEntity entity){
         startPage();
         entity.setUserId(user.getUserid());
         return getDataTable(fileService.selectList(entity));
     }
 
     @PostMapping("pinByHash")
-    public AjaxResult pinByHash(@CurrentUser UserLoginVo user, FileEntity entity, @RequestHeader(HttpHeaders.AUTHORIZATION) String token){
-        String s = fileService.pin(entity);
-       // JSON resJson = JSONUtil.parse(s);
+    public AjaxResult pinByHash(@CurrentUser UserLoginVo user,@RequestBody FileEntity entity)  {
         entity.setUserId(user.getUserid());
         fileService.insert(entity);
+        fileService.pin(entity);
         return AjaxResult.success();
     }
+    
 }
