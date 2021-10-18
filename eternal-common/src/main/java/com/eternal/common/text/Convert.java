@@ -908,7 +908,7 @@ public class Convert {
      */
     public static String toSBC(String input, Set<Character> notConvertSet)
     {
-        char c[] = input.toCharArray();
+        char[] c = input.toCharArray();
         for (int i = 0; i < c.length; i++)
         {
             if (null != notConvertSet && notConvertSet.contains(c[i]))
@@ -950,7 +950,7 @@ public class Convert {
      */
     public static String toDBC(String text, Set<Character> notConvertSet)
     {
-        char c[] = text.toCharArray();
+        char[] c = text.toCharArray();
         for (int i = 0; i < c.length; i++)
         {
             if (null != notConvertSet && notConvertSet.contains(c[i]))

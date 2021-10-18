@@ -26,4 +26,8 @@ public class FileEntity extends BaseEntity{
     private Long userId;
     @TableField(value = "cid")
     private String cid;
+    @TableField(value = "file_key")
+    private String fileKey;
+//    @TableField(value = "gateway")
+//    private String gateway;
 }

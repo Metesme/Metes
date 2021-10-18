@@ -1,6 +1,7 @@
 package com.eternal.controller;
 
 import com.eternal.common.annotation.NoAuth;
+import com.eternal.common.annotation.PostLimit;
 import com.eternal.common.utils.StringUtils;
 import com.eternal.common.web.controller.BaseController;
 import com.eternal.common.web.domain.AjaxResult;
@@ -56,6 +57,7 @@ public class UserController extends BaseController {
     }
 
     @NoAuth
+    @PostLimit
     @PostMapping("/getToken")
     public AjaxResult login (@RequestBody UserEntity user) throws Exception {
         String userName = user.getUserName();
@@ -86,4 +88,6 @@ public class UserController extends BaseController {
         result.put("checkResult",aBoolean);
         return result;
     }
+
+
 }
