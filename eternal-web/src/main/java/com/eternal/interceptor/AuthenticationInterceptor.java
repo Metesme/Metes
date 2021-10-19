@@ -2,7 +2,7 @@ package com.eternal.interceptor;
 
 
 import com.eternal.common.annotation.NoAuth;
-import com.eternal.common.utils.ClientIPUtils;
+import com.eternal.common.utils.ClientIpUtils;
 import com.eternal.service.ISystemService;
 import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IUserService;
@@ -23,11 +23,12 @@ import java.lang.reflect.Method;
 
 /**
  * token验证拦截
+ * @author jiajunmei
  */
 @Slf4j
 
 public class AuthenticationInterceptor implements HandlerInterceptor {
-
+    private static final String TOKEN_HEADER = "Bearer";
 
     @Autowired
     private IUserService userService;
@@ -58,7 +59,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!tokenHeader.startsWith("Bearer")) {
+        if (!tokenHeader.startsWith(TOKEN_HEADER)) {
             log.info("invalid token");
             result(response,
                     " {\"code\":\"400\",\"msg\":\"Error : invalid token.\"}"
@@ -66,7 +67,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
             return false;
         }
         String token = tokenHeader.replace("Bearer", "").trim();
-        String clientIp = ClientIPUtils.getIpAddress(request);
+        String clientIp = ClientIpUtils.getIpAddress(request);
         UserLoginVo user = userService.getUserByToken(token);
         if(user == null){
             Boolean limit = systemService.isIpLimit(clientIp);
@@ -99,17 +100,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
     private void result(HttpServletResponse response, String json)  {
-        PrintWriter writer = null;
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
-        try {
-            writer = response.getWriter();
+        try (PrintWriter writer = response.getWriter()) {
             writer.print(json);
         } catch (IOException e) {
-            log.error("response error",e);
-        } finally {
-            if (writer != null)
-                writer.close();
+            log.error("response error", e);
         }
     }
 }

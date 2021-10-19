@@ -36,9 +36,9 @@ public class UserController extends BaseController {
     private IUserService userService;
 
     @NoAuth
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @PostMapping("/register")
-    public AjaxResult register(@RequestBody UserRegisterVo userRegisterVo){
+    public AjaxResult register(@RequestBody UserRegisterVo userRegisterVo) throws Exception {
         String email = userRegisterVo.getEmail();
         if (    StringUtils.isNotEmpty( email)
                 && !userService.isUserEmailExist(email)){
@@ -49,8 +49,14 @@ public class UserController extends BaseController {
             userKeyEntity.setMasterKeyBa(userRegisterVo.getMasterKeyBa());
             userKeyEntity.setPrivateKeyBa(userRegisterVo.getPrivateKeyBa());
             userKeyEntity.setPublicKey(userRegisterVo.getPublicKey());
-            userService.insertUser(userEntity);
-            userService.insertUserKey(userKeyEntity);
+            int i = userService.insertUser(userEntity);
+            if(i != 1){
+                throw new Exception();
+            }
+            int isInsertUserKey = userService.insertUserKey(userKeyEntity);
+            if(isInsertUserKey != 1){
+                throw new Exception();
+            }
             return AjaxResult.success();
         }
         return AjaxResult.error(email + " is registered ");
@@ -70,7 +76,7 @@ public class UserController extends BaseController {
                 System.out.println(token);
                 //加密 token 发送到客户端解密
                 String encrypt = RSAUtils.encrypt(token, userKeyEntity.getPublicKey());
-                HashMap resultMap = new HashMap();
+                HashMap resultMap = new HashMap(16);
                 resultMap.put("userId",userId);
                 resultMap.put("token",encrypt);
                 resultMap.put("masterKeyBa",userKeyEntity.getMasterKeyBa());

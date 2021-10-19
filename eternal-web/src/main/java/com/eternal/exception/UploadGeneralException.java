@@ -1,6 +1,9 @@
 package com.eternal.exception;
 
-public class UploadGeneralException extends UploadException{
+/**
+ * @author jiajunmei
+ */
+public class UploadGeneralException extends AbstractUploadException{
 
     public UploadGeneralException(Throwable cause) {
         super("上传出现了异常", cause);

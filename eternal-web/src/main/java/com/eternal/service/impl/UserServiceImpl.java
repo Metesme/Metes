@@ -80,7 +80,7 @@ public class UserServiceImpl implements IUserService {
         lambdaQueryWrapper.eq(UserKeyEntity::getId, userId);
         return userKeyMapper.selectOne(lambdaQueryWrapper);
     }
-
+@Override
     public UserLoginVo getUserByToken(String token) {
         UserLoginVo userInfo;
         token = token.replace("Bearer", "").trim();

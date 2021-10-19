@@ -5,5 +5,8 @@ import com.eternal.domain.UserEntity;
 import com.eternal.domain.UserKeyEntity;
 
 
+/**
+ * @author jiajunmei
+ */
 public interface UserKeyMapper extends BaseMapper<UserKeyEntity> {
 }

@@ -5,8 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * @author jiajunmei
+ */
 @Slf4j
-public class ClientIPUtils {
+public class ClientIpUtils {
 
     public final static String getIpAddress(HttpServletRequest request) throws IOException {
         // 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址
