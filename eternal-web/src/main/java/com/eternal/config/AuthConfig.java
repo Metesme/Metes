@@ -11,6 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+/**
+ * @author jiajunmei
+ */
 @Configuration
 public class AuthConfig implements WebMvcConfigurer {
     @Bean

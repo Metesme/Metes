@@ -10,7 +10,6 @@ import com.eternal.domain.FileEntity;
 import com.eternal.vo.UserLoginVo;
 import com.eternal.service.IFileService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -31,7 +30,7 @@ public class FileController extends BaseController {
 
     @GetMapping ("/inlet")
     public AjaxResult getInlet(){
-        HashMap resultMap = new HashMap();
+        HashMap<String,String> resultMap = new HashMap<>(16);
         resultMap.put("inlet","https://ipfs-gw.decloud.foundation/api/v0/add");
         resultMap.put("inletToken","c3Vic3RyYXRlLWNUR3dEbjZ2aW9lNHFzSmNNSzFBSkh1d2FEeXJtZTg2ZWZTUVZ4NGZoM0JKWmdEc0Q6MHg0NGRhZTQ2YjUxMWZhOTAwYzA3NjcxOTQ2NTJlY2I4NDAyNTAzMGVkYzdkMjU5MWZkOGVlNThlNzZhZDQxNTMzNTNkYWE1ZDQ0YjRjNjFmZWE3Y2MyZGVlMGMxZWY3ZGM1NzI4ZDQwYTY1ODQzZjBiZDY3ZTk5ODVlOTZkYWM4YQ==");
         resultMap.put("param","pin");
@@ -54,5 +53,5 @@ public class FileController extends BaseController {
         fileService.pin(entity);
         return AjaxResult.success();
     }
-    
+
 }

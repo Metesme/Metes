@@ -6,6 +6,9 @@ import com.eternal.vo.UserLoginVo;
 
 import java.util.List;
 
+/**
+ * @author jiajunmei
+ */
 public interface IUserService {
     List<UserEntity> selectUserList(UserEntity entity);
 

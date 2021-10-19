@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author jiajunmei
+ */
 @Configuration
 public class ThreadPoolConfig {
     @Bean

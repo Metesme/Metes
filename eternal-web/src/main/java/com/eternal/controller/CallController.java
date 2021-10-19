@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/call")
 public class CallController {
     @GetMapping("/taskStatus")
-    public String CallBackStatus(){
+    public String callbackStatus(){
         return "";
     }
 }

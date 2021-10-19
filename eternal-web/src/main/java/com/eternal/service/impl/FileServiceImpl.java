@@ -63,19 +63,16 @@ public class FileServiceImpl implements IFileService {
     @Override
     @Async
     public void pin(FileEntity entity)  {
-        HashMap<String, String> postMap = new HashMap<>();
+        HashMap<String, String> postMap = new HashMap<>(16);
         postMap.put("cid", entity.getCid());
         postMap.put("name",entity.getFileName());
-        //Thread.sleep(10000);
         final String jsonStr = JSONUtil.toJsonStr(postMap);
         executorService.execute(()->{
-            //System.out.println(jsonStr);
             String body = HttpRequest.post("https://pin.crustcode.com/psa/pins")
                     .header(Header.AUTHORIZATION, "Bearer c3Vic3RyYXRlLWNUR3dEbjZ2aW9lNHFzSmNNSzFBSkh1d2FEeXJtZTg2ZWZTUVZ4NGZoM0JKWmdEc0Q6MHg2Y2UwMmEyY2FmNTRkNjNhYzhjNTNkYjRlNjA1MWYyZjlkYmRmOWQ1OGFiMzY0N2JlNjNlOGY0MjMzYTJjNDI5MzM4ZDk0YjkwNDY4ZWRmZWUwNjcwMjk0NDQyMGViZDZkN2EwMjczNDczY2I0YTg4ZjQ0MGVjNTM0MmI0NjQ4ZA==")
                     .body(jsonStr)
                     .timeout(300000)
                     .execute().body();
-            //System.out.println(body);
             JSONObject jsonObject = JSONUtil.parseObj(body);
             PinTaskEntity pinTaskEntity = new PinTaskEntity();
             JSONObject pin = jsonObject.getJSONObject("pin");

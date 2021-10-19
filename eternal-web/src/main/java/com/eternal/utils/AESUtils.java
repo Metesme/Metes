@@ -7,6 +7,9 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+/**
+ * @author jiajunmei
+ */
 public class AESUtils {
     public static byte[] encryptAes(byte[] content, String password) {
         try {
@@ -15,11 +18,10 @@ public class AESUtils {
             SecretKey secretKey = kgen.generateKey();
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
-            Cipher cipher = Cipher.getInstance("AES");// 创建密码器
-            //byte[] byteContent = content.getBytes("utf-8");
-            cipher.init(Cipher.ENCRYPT_MODE, key);// 初始化
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
             byte[] result = cipher.doFinal(content);
-            return result; // 加密
+            return result;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -34,7 +36,6 @@ public class AESUtils {
         return null;
     }
     public static byte[] getBytesByFile(File file) {
-        //File file = new File(pathStr);
         try {
             FileInputStream fis = new FileInputStream(file);
             ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
@@ -60,10 +61,10 @@ public class AESUtils {
             SecretKey secretKey = kgen.generateKey();
             byte[] enCodeFormat = secretKey.getEncoded();
             SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
-            Cipher cipher = Cipher.getInstance("AES");// 创建密码器
-            cipher.init(Cipher.DECRYPT_MODE, key);// 初始化
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.DECRYPT_MODE, key);
             byte[] result = cipher.doFinal(content);
-            return result; // 加密
+            return result;
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         } catch (NoSuchPaddingException e) {
@@ -84,7 +85,7 @@ public class AESUtils {
         File file = null;
         try {
             File dir = new File(filePath);
-            if (!dir.exists()) {// 判断文件目录是否存在
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             file = new File(filePath + fileName);
