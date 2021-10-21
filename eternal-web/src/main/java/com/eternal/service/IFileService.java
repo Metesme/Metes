@@ -12,4 +12,5 @@ public interface IFileService {
     int insert(FileEntity entity);
     List<FileEntity> selectList(FileEntity entity);
     void pin (FileEntity entity) ;
+    boolean deleteFile(FileEntity entity);
 }

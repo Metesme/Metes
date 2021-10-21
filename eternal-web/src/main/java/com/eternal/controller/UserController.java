@@ -16,6 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -28,7 +29,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
-
+    private static final String CREATE_BY = "System";
     @Autowired
     private TokenService tokenService;
 
@@ -39,13 +40,16 @@ public class UserController extends BaseController {
     @Transactional(rollbackFor = Exception.class)
     @PostMapping("/register")
     public AjaxResult register(@RequestBody UserRegisterVo userRegisterVo) throws Exception {
-        String email = userRegisterVo.getEmail();
-        if (    StringUtils.isNotEmpty( email)
-                && !userService.isUserEmailExist(email)){
-            UserEntity userEntity = new UserEntity();
-            userEntity.setEmail(email);
 
+        String userName = userRegisterVo.getUserName();
+        if (    StringUtils.isNotEmpty( userName)
+                && !userService.isUserNameExist(userName)){
+            UserEntity userEntity = new UserEntity();
+            userEntity.setUserName(userName);
+            userEntity.setCreateBy(CREATE_BY);
+            userEntity.setCreateTime(new Date());
             UserKeyEntity userKeyEntity = new UserKeyEntity();
+
             userKeyEntity.setMasterKeyBa(userRegisterVo.getMasterKeyBa());
             userKeyEntity.setPrivateKeyBa(userRegisterVo.getPrivateKeyBa());
             userKeyEntity.setPublicKey(userRegisterVo.getPublicKey());
@@ -53,13 +57,18 @@ public class UserController extends BaseController {
             if(i != 1){
                 throw new Exception();
             }
+            Long id = userService.selectUserByUserName(userName).getId();
+            userKeyEntity.setId(id);
+            userKeyEntity.setCreateBy(CREATE_BY);
+            userKeyEntity.setCreateTime(new Date());
             int isInsertUserKey = userService.insertUserKey(userKeyEntity);
             if(isInsertUserKey != 1){
                 throw new Exception();
             }
             return AjaxResult.success();
         }
-        return AjaxResult.error(email + " is registered ");
+
+        return AjaxResult.error(userName + " is registered ");
     }
 
     @NoAuth
@@ -76,7 +85,7 @@ public class UserController extends BaseController {
                 System.out.println(token);
                 //加密 token 发送到客户端解密
                 String encrypt = RSAUtils.encrypt(token, userKeyEntity.getPublicKey());
-                HashMap resultMap = new HashMap(16);
+                HashMap<String,Object> resultMap = new HashMap<>(16);
                 resultMap.put("userId",userId);
                 resultMap.put("token",encrypt);
                 resultMap.put("masterKeyBa",userKeyEntity.getMasterKeyBa());

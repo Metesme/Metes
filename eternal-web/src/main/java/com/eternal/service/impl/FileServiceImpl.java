@@ -7,6 +7,7 @@ import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.eternal.domain.FileEntity;
 import com.eternal.domain.PinTaskEntity;
@@ -52,8 +53,12 @@ public class FileServiceImpl implements IFileService {
         LambdaQueryChainWrapper<FileEntity> wrapper = new LambdaQueryChainWrapper<>(fileMapper)
                 .eq(FileEntity::getUserId, entity.getUserId());
         String fileName = entity.getFileName();
+        Long id = entity.getId();
         if (fileName != null){
             wrapper.eq(FileEntity::getFileName, fileName);
+        }
+        if (id != null){
+            wrapper.eq(FileEntity::getId, id);
         }
         return  wrapper
                 .orderByDesc(FileEntity::getCreateTime)
@@ -84,5 +89,16 @@ public class FileServiceImpl implements IFileService {
             pinTaskEntity.setCreated(created);
             pinTaskMapper.insert(pinTaskEntity);
         });
+    }
+
+    @Override
+    public boolean deleteFile(FileEntity entity) {
+
+        LambdaQueryWrapper<FileEntity> lq = Wrappers.lambdaQuery();
+        int i = fileMapper.delete(
+                lq.eq(FileEntity::getUserId, entity.getUserId())
+                .eq(FileEntity::getId, entity.getId())
+        );
+        return i == 1;
     }
 }

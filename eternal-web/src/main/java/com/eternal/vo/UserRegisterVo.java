@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author jiajunmei
+ */
 @Data
 public class UserRegisterVo implements Serializable {
 
