@@ -12,7 +12,9 @@ import com.eternal.service.IFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Eternal
@@ -37,7 +39,14 @@ public class FileController extends BaseController {
         return AjaxResult.success(resultMap);
     }
 
-
+    @GetMapping("del")
+    public AjaxResult deleteFile(@CurrentUser UserLoginVo user, FileEntity entity){
+        entity.setUserId(user.getUserid());
+        if(fileService.deleteFile(entity)){
+            return AjaxResult.success();
+        }
+        return AjaxResult.error();
+    }
 
     @GetMapping("list")
     public TableDataInfo getFileList(@CurrentUser UserLoginVo user, FileEntity entity){
@@ -49,6 +58,8 @@ public class FileController extends BaseController {
     @PostMapping("pinByHash")
     public AjaxResult pinByHash(@CurrentUser UserLoginVo user,@RequestBody FileEntity entity)  {
         entity.setUserId(user.getUserid());
+        entity.setCreateBy(user.getUsername());
+        entity.setCreateTime(new Date());
         fileService.insert(entity);
         fileService.pin(entity);
         return AjaxResult.success();

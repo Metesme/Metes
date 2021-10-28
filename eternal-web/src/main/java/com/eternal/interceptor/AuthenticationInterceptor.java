@@ -41,9 +41,10 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         if (!(handler instanceof HandlerMethod)) {
             return true;
         }
+
         HandlerMethod handlerMethod = (HandlerMethod) handler;
         Method method = handlerMethod.getMethod();
-
+        System.out.println(method.getName());
         log.debug("Method: " + method.getName() + ", NoAuth: " + method.isAnnotationPresent(NoAuth.class));
         if (method.isAnnotationPresent(NoAuth.class)) {
             return true;
